@@ -111,3 +111,14 @@ void BinaryTree::recursiveRemove(int n, TreeElement* r)
 
 	delete r;
 }
+void BinaryTreeprint(TreeElement, int n) {
+	if (n == nullptr)
+		return;  
+		print(n->l, ++u);  
+		for (int i = 0; i < u; ++i)
+			cout << "|";
+		cout << n->info << endl;  
+		u--;
+		print(n->r, ++u);  
+	}
+}

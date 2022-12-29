@@ -1,4 +1,4 @@
-class TreeElement
+template<class T> class TreeElement
 {
 private:
 	int data;
@@ -54,7 +54,7 @@ public:
 };
 
 
-class BinaryTree
+template<class T> class BinaryTree
 {
 	TreeElement* root;		
 	TreeElement* findElement(int n);	
