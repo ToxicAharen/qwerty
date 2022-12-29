@@ -13,7 +13,7 @@ private:
 public:
 	Products(float cost, int num)
 	{
-		Products* prod = 0;
+		Products* init = 0;
 		if (cost <= 0)
 		{
 			cout << "Сумма не может быть отрицательной или равной 0!" << endl;
@@ -27,7 +27,7 @@ public:
 		second = num;
 	}
 
-	Products read(Products prod)
+	Products read(Products init)
 	{
 		float cost = 0;
 		float num = 0;
@@ -47,18 +47,18 @@ public:
 		}
 		first = cost;
 		second = num;
-		return  prod;
+		return  init;
 	}
 
-	void display(Products prod)
+	void display(Products init)
 	{
-		cout << "Стоимость товара: " << prod.first << endl;
-		cout << "Количество товаров: " << prod.second << endl;
+		cout << "Стоимость товара: " << init.first << endl;
+		cout << "Количество товаров: " << init.second << endl;
 	}
-	void cost(Products prod)
+	void cost(Products init)
 	{
 		float sum = 0;
-		sum = prod.first * prod.second;
+		sum = init.first * init.second;
 		cout << "Стоимость всего товара: " << sum << endl;
 	}
 };

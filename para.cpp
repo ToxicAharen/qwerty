@@ -9,15 +9,18 @@ int main()
 	float cost = 5.50;
 	int num = 45;
 
-	Products prod(cost, num);
-	prod.display(prod);
 
-	Products prod1(prod);
-	
-	prod1.read(prod1);
 
-	prod1.display(prod1);
+	Products init(cost, num);
+
+	init.display(init);
+
+	Products init1(init);
 	
-	prod.cost(prod1);
+	init1.read(init1);
+
+	init1.display(init1);
+	
+	init.cost(init1);
 }
 }
