@@ -23,4 +23,3 @@ int main()
 	
 	init.cost(init1);
 }
-}
