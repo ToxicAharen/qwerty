@@ -14,12 +14,10 @@ int main()
 	Products init(cost, num);
 
 	init.display(init);
-
-	Products init1(init);
 	
-	init1.read(init1);
+	init.read(init1);
 
-	init1.display(init1);
+	init.display(init1);
 	
 	init.cost(init1);
 }
