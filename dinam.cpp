@@ -1,119 +1,49 @@
-﻿#include <iostream>
-#include <cstdlib>
-using namespace std;
+﻿template <typename TElement>
+struct TNode {
+    TElement data;
+    TNode <TElement>* next;
 
-
-#define SIZE 5
-
-
-class Stack
-{
-    int* arr;
-    int top;
-    int capacity;
-
-public:
-    Stack(int size = SIZE);         
-    ~Stack();                       
-
-    void push(int);
-    int pop();
-    int peek();
-
-    int size();
-    bool isEmpty();
-    bool isFull();
+    TNode(TElement newData, TNode <TElement>* nextNode) {
+        data = newData;
+        next = nextNode;
+    }
 };
 
-Stack::Stack(int size)
-{
-    arr = new int[size];
-    capacity = size;
-    top = -1;
-}
+template <typename TElement>
+class stackInList {
+private:
+    unsigned int sizeOfStack;
+    TNode <TElement>* currentTop;
 
-Stack::~Stack() {
-    delete[] arr;
-}
-
-
-void Stack::push(int x)
-{
-    if (isFull())
-    {
-        cout << "Overflow\nProgram Terminated\n";
-        exit(EXIT_FAILURE);
+public:
+    stackInList() {
+        sizeOfStack = 0;
+        currentTop = NULL;
     }
 
-    cout << "Inserting " << x << endl;
-    arr[++top] = x;
-}
-
-
-int Stack::pop()
-{
-  
-    if (isEmpty())
-    {
-        cout << "Underflow\nProgram Terminated\n";
-        exit(EXIT_FAILURE);
+    ~stackInList() {
+        while (size())
+            pop();
     }
 
-    cout << "Removing " << peek() << endl;
-
-    
-    return arr[top--];
-}
-
-
-int Stack::peek()
-{
-    if (!isEmpty()) {
-        return arr[top];
-    }
-    else {
-        exit(EXIT_FAILURE);
-    }
-}
-
-
-int Stack::size() {
-    return top + 1;
-}
-
-
-bool Stack::isEmpty() {
-    return top == -1;               
-}
-
-
-bool Stack::isFull() {
-    return top == capacity - 1;     
-}
-
-int main()
-{
-    Stack pt(3);
-
-    pt.push(1);
-    pt.push(2);
-
-    pt.pop();
-    pt.pop();
-
-    pt.push(3);
-
-    cout << "The top element is " << pt.peek() << endl;
-    cout << "The stack size is " << pt.size() << endl;
-
-    pt.pop();
-
-    if (pt.isEmpty()) {
-        cout << "The stack is empty\n";
-    }
-    else {
-        cout << "The stack is not empty\n";
+    void push(const TElement element) {
+        TNode <TElement>* node = new TNode <TElement>(element, currentTop);
+        sizeOfStack++;
+        currentTop = node;
     }
 
-    return 0;
-}
+    void pop() {
+        sizeOfStack--;
+        TNode <TElement>* node = currentTop;
+        currentTop = currentTop->next;
+        delete node;
+    }
+
+    TElement top() {
+        return currentTop->data;
+    }
+
+    unsigned int size() {
+        return sizeOfStack;
+    }
+};
