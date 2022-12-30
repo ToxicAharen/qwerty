@@ -15,9 +15,9 @@ int main()
 
 	init.display(init);
 	
-	init.read(init1);
+	init.read(init);
 
-	init.display(init1);
+	init.display(init);
 	
-	init.cost(init1);
+	init.cost(init);
 }
