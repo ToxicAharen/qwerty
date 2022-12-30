@@ -1,103 +1,189 @@
 ﻿#include <iostream>
-#include <string>
 using namespace std;
-class TDecimal
+
+
+
+class Decimal
 {
+private:
+
+
+    virtual void transform(const string& value, const int signn) {
+        size = value.length();
+        int step = size - 1;
+        int string_size = 0;
+        if (signn == 0)
+            sign = -1;
+        else
+            sign = 1;
+        for (int i = 0; i < SIZE; i++) {    
+            if (i >= SIZE - size) {
+                val[i] = value[string_size];
+                int number = val[i] - 48;       
+                total_sum += number * pow(10, step);    
+                step--;        
+                string_size++;  
+            }
+            else {
+                val[i] = '0';
+            }
+        }
+    }
+
+    //Виртуальный метод вывода числа
+
+    virtual void display() {
+        cout << "Десятичное  число:" << endl;
+        for (int i = 0; i < SIZE; i++)
+        {
+            cout << val[i];
+        }
+        cout << "\n\n";
+    }
+
+
 public:
-    enum { SIZE = 100 };
+    enum { SIZE = 100 };      
 
-protected:
-    unsigned char val[SIZE];
-    unsigned size;
+    unsigned char val[SIZE];    
+    unsigned int size = 0;
+    int sign = 0;                 
+    int total_sum = 0;
 
-public:
-    TDecimal(unsigned value = 0) : size(0)
+    Decimal() {}       
+
+    void init(const string& value, int signn)       
     {
-        *this = value;
-    }
-    TDecimal(const string& value) : size(0)
-    {
-        *this = value;
+        transform(value, signn);
     }
 
-    TDecimal& operator = (unsigned value)
-    {
-        size = 0;
-        while (value)
-        {
-            val[size++] = value % 10;
-            value /= 10;
+
+    void info() {
+        display();
+    }
+
+
+    Decimal operator + (const Decimal& other) {
+        Decimal b = *this;
+        b.total_sum += other.total_sum;
+        int level = 0;
+        bool flag = true;
+        while (flag) {
+            if (pow(10, level) > b.total_sum) {
+                flag = false;
+            }
+            else {
+                level++;
+            }
         }
-
-        return *this;
-    }
-    TDecimal& operator = (const string& value)
-    {
-        size = value.size();
-        for (unsigned i = 0; i < size; ++i)
-        {
-            val[i] = value[size - i - 1] - 48;
+        b.size = level;
+        level--;
+        int fake_summ = b.total_sum;
+        for (int i = 0; i < SIZE; i++) {
+            if (i >= SIZE - b.size) {
+                b.val[i] = (int)(fake_summ / pow(10, level)) + '0';
+                fake_summ -= (int)(fake_summ / pow(10, level)) * pow(10, level);
+                level--;
+            }
+            else {
+                val[i] = '0';
+            }
         }
-
-        return *this;
+        return b;
     }
 
-    unsigned operator [] (unsigned i)
-    {
-        unsigned char digit = 0;
-
-        if (i < size)
-        {
-            digit = val[size - i];
-        }
-
-        return digit;
-    }
-
-    TDecimal operator + (const TDecimal& dec)
-    {
-        TDecimal result;
-
-        unsigned mod = 0;
-
-        result.size = (size < dec.size) ? dec.size : size;
-
-        for (unsigned i = 0; i < result.size; ++i)
-        {
-            result.val[i] = val[i] + dec.val[i] + mod;
-
-            mod = result.val[i] / 10;
-
-            result.val[i] %= 10;
-        }
-
-        if (mod)
-        {
-            result.val[result.size++] = 1;
-        }
-
-        return result;
-    }
-
-    unsigned GetSize() const
-    {
-        return size;
-    }
-
-    friend ostream& operator << (ostream& os, const TDecimal& digit)
-    {
-        for (unsigned i = digit.size - 1; i < digit.size; --i)
-        {
-            os << (unsigned)digit.val[i];
-        }
-        return os;
-    }
 };
+
+class BiteString :
+    public Decimal {
+
+private:
+    void display() {
+        cout << "\n\nДвоичное число" << endl;
+        for (int i = 0; i < SIZE; i++)
+        {
+            cout << val[i];
+        }
+        cout << "\n\n";
+    }
+    void transform(const string& value)
+    {
+        size = value.length();
+        int step = size - 1;
+        int string_size = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (i >= SIZE - size) {
+                val[i] = value[string_size];
+                int number;
+                number = value[string_size] - '0';
+                total_sum += number * pow(2, step);
+                step--;
+                string_size++;
+            }
+            else {
+                val[i] = '0';
+            }
+        }
+    }
+
+public:
+    BiteString operator + (const BiteString& other) {
+        BiteString b = *this;
+        b.total_sum += other.total_sum;
+        int level = 0;
+        bool flag = true;
+        while (flag) {
+            if (pow(10, level) > b.total_sum) {
+                flag = false;
+            }
+            else {
+                level++;
+            }
+        }
+        b.size = level;
+        level--;
+        int fake_summ = b.total_sum;
+        for (int i = 0; i < SIZE; i++) {
+            if (i >= SIZE - b.size) {
+                b.val[i] = (int)(fake_summ / pow(10, level)) + '0';
+                fake_summ -= (int)(fake_summ / pow(10, level)) * pow(10, level);
+                level--;
+            }
+            else {
+                val[i] = '0';
+            }
+        }
+        return b;
+    }
+
+};
+
 int main()
 {
-    TDecimal a(10), b("4");
+    setlocale(LC_ALL, "ru");
+   
 
-    cout << (a + b) << endl;
+    Decimal a, b;
+    a.init("14", 1);
+    b.init("101", 1);
+    a.info();
+    b.info();
+    Decimal c = (a + b);
+    cout << "\n\nРезультаты суммирования:\n\n";
+    c.info();
+    cout << "total_sum = " << c.total_sum << "\t size = " << c.size << endl;
+
+    
+
+    BiteString d, e;
+    d.init("100", 1);
+    e.init("1", 1);
+    d.info();
+    e.info();
+    BiteString f = (d + e);
+    cout << "\n\nРезультаты суммирования:\n\n";
+    f.info();
+    cout << "total_sum = " << f.total_sum << "\t size = " << f.size << endl;
 
     return 0;
 }
