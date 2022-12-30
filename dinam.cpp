@@ -1,236 +1,119 @@
 ﻿#include <iostream>
+#include <cstdlib>
 using namespace std;
 
 
-struct Node {
-    int data;
-    Node* next, * prev;
-};
+#define SIZE 5
 
-class List {
+
+class Stack
+{
+    int* arr;
+    int top;
+    int capacity;
+
 public:
-    int count;
-    Node* head, * tail;
-    List();
-    void getElem(int p = 0);
-    void Del(int p = 0);
-    void Insert(int p = 0);
-    void Display();
-    void addTail(int n);
-    void addHead(int n);
+    Stack(int size = SIZE);         
+    ~Stack();                       
+
+    void push(int);
+    int pop();
+    int peek();
+
+    int size();
+    bool isEmpty();
+    bool isFull();
 };
 
-List::List() {
-    head = tail = NULL;
-    count = 0;
+Stack::Stack(int size)
+{
+    arr = new int[size];
+    capacity = size;
+    top = -1;
 }
-void List::addHead(int n) {
-    Node* temp = new Node;
-    temp->prev = 0;
-    temp->data = n;
-    temp->next = head;
 
-    if (head != 0) {
-        head->prev = temp;
+Stack::~Stack() {
+    delete[] arr;
+}
+
+
+void Stack::push(int x)
+{
+    if (isFull())
+    {
+        cout << "Overflow\nProgram Terminated\n";
+        exit(EXIT_FAILURE);
     }
-    if (count == 0) {
-        head = tail = temp;
+
+    cout << "Inserting " << x << endl;
+    arr[++top] = x;
+}
+
+
+int Stack::pop()
+{
+  
+    if (isEmpty())
+    {
+        cout << "Underflow\nProgram Terminated\n";
+        exit(EXIT_FAILURE);
+    }
+
+    cout << "Removing " << peek() << endl;
+
+    
+    return arr[top--];
+}
+
+
+int Stack::peek()
+{
+    if (!isEmpty()) {
+        return arr[top];
     }
     else {
-        head = temp;
+        exit(EXIT_FAILURE);
     }
-    count++;
 }
 
-void List::addTail(int n) {
-    Node* temp = new Node;
-    temp->next = 0;
-    temp->data = n;
-    temp->prev = tail;
 
-    if (tail != 0) {
-        tail->next = temp;
-    }
+int Stack::size() {
+    return top + 1;
+}
 
 
-    if (count == 0) {
-        head = tail = temp;
+bool Stack::isEmpty() {
+    return top == -1;               
+}
+
+
+bool Stack::isFull() {
+    return top == capacity - 1;     
+}
+
+int main()
+{
+    Stack pt(3);
+
+    pt.push(1);
+    pt.push(2);
+
+    pt.pop();
+    pt.pop();
+
+    pt.push(3);
+
+    cout << "The top element is " << pt.peek() << endl;
+    cout << "The stack size is " << pt.size() << endl;
+
+    pt.pop();
+
+    if (pt.isEmpty()) {
+        cout << "The stack is empty\n";
     }
     else {
-        tail = temp;
-    }
-    count++;
-}
-
-void List::Insert(int p) {
-    if (p == 0) {
-        cout << "Input position: ";
-        cin >> p;
+        cout << "The stack is not empty\n";
     }
 
-    if (p < 1 || p > count + 1) {
-        cout << "Incorrect position !!!" << endl;
-        return;
-    }
-
-    if (p == count + 1) {
-        int data;
-        cout << "Input new number: ";
-        cin >> data;
-        addTail(data);
-        return;
-    }
-    else if (p == 1) {
-        int data;
-        cout << "Input new number: ";
-        cin >> data;
-        addHead(data);
-        return;
-    }
-
-    int i = 1;
-
-    Node* Ins = head;
-
-    while (i < p) {
-        Ins = Ins->next;
-        i++;
-    }
-
-    Node* PrevIns = Ins->prev;
-
-    Node* temp = new Node;
-
-    cout << "Input new number: ";
-    cin >> temp->data;
-
-    if (PrevIns != 0 && count != 1)
-        PrevIns->next = temp;
-
-    temp->next = Ins;
-    temp->prev = PrevIns;
-    Ins->prev = temp;
-
-    count++;
-}
-
-void List::Del(int p) {
-    if (p == 0) {
-        cout << "Input position: ";
-        cin >> p;
-    }
-
-    if (p < 1 || p > count) {
-        cout << "Incorrect position!" << endl;
-        return;
-    }
-
-    int i = 1;
-    Node* Del = head;
-
-    while (i < p) {
-        Del = Del->next;
-        i++;
-    }
-
-    Node* PrevDel = Del->prev;
-    Node* AfterDel = Del->next;
-
-    if (PrevDel != 0 && count != 1) {
-        PrevDel->next = AfterDel;
-        if (AfterDel != 0 && count != 1) {
-            AfterDel->prev = PrevDel;
-        }
-    }
-
-    if (p == 1) {
-        head = AfterDel;
-    }
-    if (p == count)
-        tail = PrevDel;
-
-    delete Del;
-
-    count--;
-}
-
-void List::Display() {
-    if (count != 0) {
-        Node* temp = head;
-        cout << "( ";
-        while (temp->next != 0) {
-            cout << temp->data << ", ";
-            temp = temp->next;
-        }
-
-        cout << temp->data << " )" << endl;
-    }
-}
-
-void List::getElem(int p) {
-    if (p == 0) {
-        cout << "Input position: ";
-        cin >> p;
-    }
-
-    if (p < 1 || p > count) {
-        cout << "Incorrect position!" << endl;
-        return;
-    }
-
-    Node* temp;
-
-    if (p <= count / 2) {
-        temp = head;
-        int i = 1;
-
-        while (i < p) {
-            temp = temp->next;
-            i++;
-        }
-    }
-    else {
-        temp = tail;
-        int i = 1;
-
-        while (i <= count - p) {
-            temp = temp->prev;
-            i++;
-        }
-    }
-    cout << p << " element: " << temp->data << endl;
-}
-
-ostream& operator << (ostream& os, const List& s) {
-    if (s.count != 0) {
-        Node* temp = s.head;
-        os << "( ";
-        while (temp->next != 0) {
-            os << temp->data << ", ";
-            temp = temp->next;
-        }
-
-        os << temp->data << " )" << endl;
-    }
-    return os;
-}
-
-void List::showEvenNumbers() {
-    Node* temp = head;
-    while (temp) {
-        if (temp % 2 == 0) {
-            cout << temp;
-        }
-        temp = temp->next
-    }
-}
-int main() {
-    List lst;
-    int a[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    cout << "List: " << endl;
-    cout << lst;
-    lst.Insert();
-    cout << lst;
-    lst.getElem();
-
+    return 0;
 }
