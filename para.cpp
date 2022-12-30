@@ -13,11 +13,11 @@ int main()
 
 	Products init(cost, num);
 
-	init.display(init);
+	init.display();
 	
-	init.read(init);
+	init.read();
 
-	init.display(init);
+	init.display();
 	
-	init.cost(init);
+	init.cost();
 }
