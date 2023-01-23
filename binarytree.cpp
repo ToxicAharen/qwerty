@@ -1,4 +1,5 @@
-﻿#include "binarytree.h"	
+﻿#include <iostream>
+#include "binarytree.h"	
 TreeElement* BinaryTree::findElement(int n)		
 {
 	TreeElement* element = root;	
@@ -111,14 +112,14 @@ void BinaryTree::recursiveRemove(int n, TreeElement* r)
 
 	delete r;
 }
-void BinaryTreeprint(TreeElement, int n) {
+void BinaryTree::print(TreeElement, int n) {
 	if (n == nullptr)
 		return;  
-		print(n->l, ++u);  
+		cout << n->l, ++u << endl;
 		for (int i = 0; i < u; ++i)
 			cout << "|";
 		cout << n->info << endl;  
 		u--;
-		print(n->r, ++u);  
+		cout << n->r, ++u << endl;  
 	}
 }
