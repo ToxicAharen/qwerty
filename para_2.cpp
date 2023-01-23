@@ -12,7 +12,7 @@ public:
 };
 
 int main() {
-    product a(10.75, 50);
+    product a(25, 50);
     std::cout << a.cost() << std::endl;
     return 0;
 }
