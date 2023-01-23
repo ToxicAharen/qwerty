@@ -121,5 +121,6 @@ void BinaryTree::print(TreeElement, int n) {
 		cout << n->info << endl;  
 		u--;
 		cout << n->r, ++u << endl;  
+		cout << 'few' << endl;
 	}
 }
